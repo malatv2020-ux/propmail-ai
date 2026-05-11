@@ -895,7 +895,7 @@
       PropMail AI drafts buyer responses, listing follow-ups, offer submissions, and 5 more email types — written to sound like <em>you</em>, not a template. No more staring at a blank screen between showings.
     </p>
     <div class="hero-cta-row">
-      <a href="https://buy.stripe.com/test_5kQ6oAe9050T6EBeYrfjG00" class="btn-primary">
+      <a href="#" class="btn-primary" onclick="openAuth(event, 'register')">
         Start 7-Day Free Trial
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
@@ -1120,7 +1120,7 @@ Marcus Reid</div>
           Email support from a real human
         </li>
       </ul>
-      <a href="https://buy.stripe.com/test_5kQ6oAe9050T6EBeYrfjG00" class="btn-primary">
+      <a href="#" class="btn-primary" onclick="openAuth(event, 'register')">
         Start Free Trial
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
@@ -1195,7 +1195,7 @@ Marcus Reid</div>
   <div class="container final-cta-content">
     <h2>Get your evenings back. Starting tonight.</h2>
     <p>Join hundreds of agents already drafting client emails in seconds, not hours.</p>
-    <a href="https://buy.stripe.com/test_5kQ6oAe9050T6EBeYrfjG00" class="btn-primary">
+    <a href="#" class="btn-primary" onclick="openAuth(event, 'register')">
       Start Your 7-Day Free Trial
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
@@ -1285,10 +1285,15 @@ Marcus Reid</div>
     }
   });
 
-  function openAuth(e) {
+  function openAuth(e, tab) {
     if (e) e.preventDefault();
     document.getElementById('auth-overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (tab === 'register') {
+      switchAuthTab('register', document.querySelectorAll('.auth-tab')[1]);
+    } else {
+      switchAuthTab('login', document.querySelectorAll('.auth-tab')[0]);
+    }
   }
   function closeAuth() {
     document.getElementById('auth-overlay').classList.remove('active');
@@ -1310,7 +1315,7 @@ Marcus Reid</div>
   async function signInWithGoogle() {
     const { error } = await _supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/index.html' }
+      options: { redirectTo: window.location.origin + '/app.html' }
     });
     if (error) showAuthError(error.message);
   }
@@ -1327,7 +1332,7 @@ Marcus Reid</div>
     btn.disabled = false; btn.textContent = 'Sign In →';
 
     if (error) showAuthError(error.message);
-    else window.location.href = 'index.html';
+    else window.location.href = 'app.html';
   }
 
   async function signUp() {
