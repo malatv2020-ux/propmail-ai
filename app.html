@@ -1031,6 +1031,162 @@
   @media (max-width: 480px) {
     .trial-btn span { display: none; }
   }
+
+  /* --- TRIAL BANNER --- */
+  .trial-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 24px;
+    background: linear-gradient(90deg, #fdf6e3, #f9ecc4);
+    border-bottom: 1px solid #e5d08a;
+    font-size: 13px;
+    color: #7a5c1e;
+    position: sticky;
+    top: 65px;
+    z-index: 95;
+    flex-wrap: wrap;
+  }
+  .trial-banner.visible { display: flex; }
+  .trial-banner.urgent {
+    background: linear-gradient(90deg, #fde8dd, #f9d0bb);
+    border-bottom-color: #d89c7f;
+    color: #8b3a17;
+  }
+  .trial-banner-text { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 200px; }
+  .trial-banner-text strong { font-weight: 700; }
+  .trial-upgrade-btn {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    white-space: nowrap;
+  }
+  .trial-upgrade-btn:hover { background: #2a2820; transform: translateY(-1px); }
+  [data-theme="dark"] .trial-banner {
+    background: linear-gradient(90deg, #2a2310, #3a2f15);
+    color: #e5cb8a;
+    border-bottom-color: #4a3e1c;
+  }
+  [data-theme="dark"] .trial-banner.urgent {
+    background: linear-gradient(90deg, #3a2018, #4a261a);
+    color: #f0b89a;
+  }
+
+  /* --- PAYWALL MODAL --- */
+  .paywall-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,14,12,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .paywall-overlay.active { display: flex; }
+  .paywall-card {
+    background: var(--paper);
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    text-align: center;
+  }
+  .paywall-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #fde8dd, #f9d0bb);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+  }
+  .paywall-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .paywall-sub {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .paywall-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .paywall-price-num {
+    font-family: var(--font-display);
+    font-size: 48px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .paywall-price-period { color: var(--muted); font-size: 15px; }
+  .paywall-benefits {
+    text-align: left;
+    margin: 0 auto 28px;
+    max-width: 320px;
+    list-style: none;
+  }
+  .paywall-benefits li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .paywall-benefits li svg { color: var(--gold); flex-shrink: 0; }
+  .paywall-cta {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.18s;
+    box-shadow: 0 4px 14px rgba(201,168,76,0.35);
+  }
+  .paywall-cta:hover { background: #d4b85c; transform: translateY(-1px); }
+  .paywall-logout {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    text-decoration: underline;
+  }
+  .paywall-logout:hover { color: var(--ink); }
 </style>
 </head>
 <body>
@@ -1101,7 +1257,7 @@
       <span class="user-email" id="user-email"></span>
       <button class="logout-btn" onclick="signOut()">Sign out</button>
     </div>
-    <a class="trial-btn" href="https://buy.stripe.com/test_5kQ6oAe9O5OT6EBeYrfjG00" target="_blank" id="trial-btn">
+    <a class="trial-btn" href="https://buy.stripe.com/test_5kQ6oAe9050T6EBeYrfjG00" target="_blank" id="trial-btn">
       ✨ <span>Start Free Trial</span>
     </a>
     <button class="dark-toggle" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">
@@ -1112,6 +1268,38 @@
     </button>
   </div>
 </header>
+
+<!-- Trial banner (Day 5-7) -->
+<div class="trial-banner" id="trial-banner">
+  <div class="trial-banner-text">
+    <span style="font-size: 16px">✨</span>
+    <span id="trial-banner-msg">Your free trial ends in <strong>2 days</strong>. Upgrade to keep generating unlimited emails.</span>
+  </div>
+  <button class="trial-upgrade-btn" onclick="goToUpgrade()">Upgrade — $29/mo</button>
+</div>
+
+<!-- Paywall modal (Day 8+) -->
+<div class="paywall-overlay" id="paywall-overlay">
+  <div class="paywall-card">
+    <div class="paywall-icon">⏰</div>
+    <div class="paywall-title">Your 7-day trial has ended</div>
+    <div class="paywall-sub">Hope PropMail saved you some hours this week. Upgrade to keep generating unlimited emails and never write a follow-up from scratch again.</div>
+    <div class="paywall-price-row">
+      <span class="paywall-price-num">$29</span>
+      <span class="paywall-price-period">/ month</span>
+    </div>
+    <ul class="paywall-benefits">
+      <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited email generations</li>
+      <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>All 8 email types</li>
+      <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Cancel anytime, no contract</li>
+    </ul>
+    <a href="#" class="paywall-cta" onclick="goToUpgrade(event)">
+      Upgrade & Continue
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+    <button class="paywall-logout" onclick="signOut()">Sign out</button>
+  </div>
+</div>
 
 <!-- Mobile tabs -->
 <div class="mobile-tabs" id="mobile-tabs">
@@ -1322,6 +1510,64 @@ function onLoggedIn(user) {
   document.getElementById('user-info').classList.add('visible');
   document.getElementById('user-email').textContent = user.email;
   document.getElementById('trial-btn').style.display = 'none';
+  checkTrialStatus(user);
+}
+
+const TRIAL_DAYS = 7;
+const STRIPE_URL = 'https://buy.stripe.com/test_5kQ6oAe9050T6EBeYrfjG00';
+
+function checkTrialStatus(user) {
+  // Paid users skip all trial logic
+  if (user.user_metadata?.is_paid === true) {
+    hideTrialUI();
+    return;
+  }
+
+  const createdAt = new Date(user.created_at).getTime();
+  const now = Date.now();
+  const daysOld = Math.floor((now - createdAt) / 86400000);
+  const daysLeft = TRIAL_DAYS - daysOld;
+
+  if (daysLeft <= 0) {
+    // Trial expired — hard paywall
+    showPaywall();
+  } else if (daysLeft <= 3) {
+    // Day 5, 6, 7 → countdown banner
+    showTrialBanner(daysLeft);
+  } else {
+    hideTrialUI();
+  }
+}
+
+function showTrialBanner(daysLeft) {
+  const banner = document.getElementById('trial-banner');
+  const msg = document.getElementById('trial-banner-msg');
+  const dayWord = daysLeft === 1 ? 'day' : 'days';
+  msg.innerHTML = `Your free trial ends in <strong>${daysLeft} ${dayWord}</strong>. Upgrade to keep generating unlimited emails.`;
+  banner.classList.add('visible');
+  if (daysLeft <= 1) banner.classList.add('urgent');
+  else banner.classList.remove('urgent');
+  document.getElementById('paywall-overlay').classList.remove('active');
+}
+
+function showPaywall() {
+  document.getElementById('paywall-overlay').classList.add('active');
+  document.getElementById('trial-banner').classList.remove('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideTrialUI() {
+  document.getElementById('trial-banner').classList.remove('visible');
+  document.getElementById('paywall-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function goToUpgrade(e) {
+  if (e) e.preventDefault();
+  _supabase.auth.getUser().then(({ data: { user } }) => {
+    const email = user?.email || '';
+    window.location.href = STRIPE_URL + (email ? '?prefilled_email=' + encodeURIComponent(email) : '');
+  });
 }
 
 function onLoggedOut() {
@@ -1401,7 +1647,7 @@ async function signUp() {
 
 async function signOut() {
   await _supabase.auth.signOut();
-  onLoggedOut();
+  window.location.href = 'index.html';
 }
 
 function switchAuthTab(tab, el) {
