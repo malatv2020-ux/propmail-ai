@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PropMail AI — Write Client Emails 10x Faster. Built for Realtors.</title>
+<meta name="description" content="AI email writer built for real estate agents. Stop wasting 2 hours a day on follow-ups. Generate buyer responses, listing follow-ups, and more in seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a2540;
+    --navy-deep: #061a30;
+    --navy-light: #163759;
+    --gold: #c9a84c;
+    --gold-light: #e6cf7e;
+    --gold-soft: #f5ecd2;
+    --ink: #0f172a;
+    --body: #475569;
+    --muted: #94a3b8;
+    --paper: #ffffff;
+    --cream: #faf8f4;
+    --border: #e2e8f0;
+    --radius: 12px;
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --shadow-sm: 0 1px 3px rgba(10,37,64,0.06);
+    --shadow-md: 0 4px 20px rgba(10,37,64,0.08);
+    --shadow-lg: 0 20px 60px rgba(10,37,64,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+  }
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .logo-name {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+  }
+  .logo-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--body);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta {
+    background: var(--navy);
+    color: white !important;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: all 0.18s;
+  }
+  .nav-cta:hover { background: var(--navy-deep); transform: translateY(-1px); }
+  .nav-mobile-toggle { display: none; }
+
+  /* --- HERO --- */
+  .hero {
+    padding: 80px 0 100px;
+    background: linear-gradient(180deg, #fff 0%, var(--cream) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--gold-soft);
+    color: #8a6e1f;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(36px, 5.5vw, 60px);
+    line-height: 1.1;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    max-width: 900px;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .hero-sub {
+    font-size: 19px;
+    color: var(--body);
+    max-width: 640px;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 16px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: var(--font-sans);
+    box-shadow: 0 4px 14px rgba(201,168,76,0.35);
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201,168,76,0.4);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--navy);
+    padding: 16px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    transition: all 0.18s;
+  }
+  .btn-secondary:hover { border-color: var(--navy); }
+  .hero-trust {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .hero-trust-item { display: flex; align-items: center; gap: 6px; }
+  .hero-trust-item svg { color: var(--gold); flex-shrink: 0; }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--font-serif);
+    font-size: 40px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num em { color: var(--gold); font-style: normal; }
+  .stat-label {
+    font-size: 14px;
+    color: var(--body);
+  }
+
+  /* --- SECTION GENERIC --- */
+  section { padding: 100px 0; }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.15;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+  .section-sub {
+    font-size: 17px;
+    color: var(--body);
+    max-width: 620px;
+    margin-bottom: 56px;
+  }
+
+  /* --- DEMO SECTION --- */
+  .demo { background: var(--navy); color: white; position: relative; overflow: hidden; }
+  .demo::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .demo .section-title { color: white; }
+  .demo .section-sub { color: rgba(255,255,255,0.7); }
+  .demo .section-eyebrow { color: var(--gold-light); }
+
+  .demo-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+    position: relative;
+  }
+  .demo-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+  }
+  .demo-card.bad {
+    border-color: rgba(220,80,60,0.3);
+  }
+  .demo-card.good {
+    border-color: rgba(201,168,76,0.5);
+    background: linear-gradient(180deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.02) 100%);
+  }
+  .demo-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .demo-card.bad .demo-label {
+    background: rgba(220,80,60,0.15);
+    color: #ff9b8e;
+  }
+  .demo-card.good .demo-label {
+    background: rgba(201,168,76,0.18);
+    color: var(--gold-light);
+  }
+  .demo-time {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+  }
+  .demo-time strong { color: white; font-weight: 600; }
+  .demo-subject {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .demo-body {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.85);
+    white-space: pre-wrap;
+  }
+  .demo-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 6px var(--navy), 0 4px 16px rgba(201,168,76,0.4);
+    z-index: 2;
+  }
+
+  /* --- FEATURES SECTION --- */
+  .features { background: var(--cream); }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    transition: all 0.22s;
+  }
+  .feature-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--gold-soft);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+  .feature-name {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+  .feature-desc {
+    font-size: 14px;
+    color: var(--body);
+    line-height: 1.6;
+  }
+
+  /* --- TESTIMONIALS --- */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .testimonial-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    transition: all 0.22s;
+  }
+  .testimonial-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--gold);
+  }
+  .stars {
+    color: var(--gold);
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .testimonial-quote {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .testimonial-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .testimonial-name {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 14px;
+  }
+  .testimonial-role {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* --- PRICING --- */
+  .pricing { background: linear-gradient(180deg, var(--cream) 0%, white 100%); }
+  .pricing-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .pricing-inner .section-title,
+  .pricing-inner .section-sub { max-width: 100%; text-align: center; }
+  .pricing-card {
+    background: white;
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    padding: 48px 40px;
+    max-width: 460px;
+    width: 100%;
+    margin-top: 32px;
+    text-align: left;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+  }
+  .pricing-tag {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--navy);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .plan-name {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .plan-desc {
+    color: var(--body);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .plan-price-num {
+    font-family: var(--font-serif);
+    font-size: 56px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .plan-price-period {
+    color: var(--body);
+    font-size: 16px;
+  }
+  .plan-trial {
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+  .plan-features {
+    list-style: none;
+    margin-bottom: 32px;
+  }
+  .plan-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .plan-features li:last-child { border-bottom: none; }
+  .plan-check {
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .pricing-card .btn-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+  }
+  .pricing-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  /* --- FAQ --- */
+  .faq { background: var(--cream); }
+  .faq-list {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .faq-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    transition: all 0.18s;
+    overflow: hidden;
+  }
+  .faq-item.open { border-color: var(--gold); box-shadow: var(--shadow-sm); }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 26px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    gap: 16px;
+    user-select: none;
+  }
+  .faq-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.22s;
+    font-weight: 700;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 26px;
+    color: var(--body);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .faq-item.open .faq-a {
+    max-height: 400px;
+    padding-bottom: 22px;
+  }
+
+  /* --- FINAL CTA --- */
+  .final-cta {
+    background: var(--navy);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .final-cta-content { position: relative; z-index: 1; }
+  .final-cta h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 4vw, 40px);
+    color: white;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .final-cta p {
+    color: rgba(255,255,255,0.75);
+    font-size: 17px;
+    margin-bottom: 32px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    background: var(--navy-deep);
+    color: rgba(255,255,255,0.6);
+    padding: 40px 0;
+    font-size: 14px;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .logo-name { color: white; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 900px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+    .demo-compare { grid-template-columns: 1fr; gap: 36px; }
+    .demo-arrow {
+      top: auto; left: 50%;
+      bottom: -52px;
+      transform: translateX(-50%) rotate(90deg);
+      box-shadow: 0 0 0 6px var(--navy), 0 4px 16px rgba(201,168,76,0.4);
+    }
+    .demo-card:first-child { margin-bottom: 30px; }
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr; gap: 20px; }
+    section { padding: 70px 0; }
+    .hero { padding: 60px 0 70px; }
+  }
+  @media (max-width: 560px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .hero-cta-row { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-secondary { justify-content: center; }
+    .pricing-card { padding: 36px 24px; }
+    .plan-price-num { font-size: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-name">PropMail AI</span>
+      <span class="logo-badge">Beta</span>
+    </a>
+    <div class="nav-links">
+      <a href="#demo">Demo</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="index.html" class="nav-cta">Sign In →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L9.91 8.09 2 9l6.05 5.27L6.18 22 12 18.27 17.82 22l-1.87-7.73L22 9l-7.91-.91z"/></svg>
+      Built for U.S. real estate agents
+    </div>
+    <h1>Stop spending 2 hours a day on client emails. <em>Write them in 30 seconds.</em></h1>
+    <p class="hero-sub">
+      PropMail AI drafts buyer responses, listing follow-ups, offer submissions, and 5 more email types — written to sound like <em>you</em>, not a template. No more staring at a blank screen between showings.
+    </p>
+    <div class="hero-cta-row">
+      <a href="https://buy.stripe.com/test_5kQ6oAe9O5OT6EBeYrfjG00" class="btn-primary">
+        Start 7-Day Free Trial
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#demo" class="btn-secondary">See it in action</a>
+    </div>
+    <div class="hero-trust">
+      <div class="hero-trust-item">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        No credit card to start
+      </div>
+      <div class="hero-trust-item">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        Cancel anytime
+      </div>
+      <div class="hero-trust-item">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        Works on any device
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num"><em>~12</em> hrs</div>
+        <div class="stat-label">Saved per week, per agent</div>
+      </div>
+      <div>
+        <div class="stat-num"><em>30</em> sec</div>
+        <div class="stat-label">Average time to a finished email</div>
+      </div>
+      <div>
+        <div class="stat-num"><em>8</em> types</div>
+        <div class="stat-label">Email scenarios covered out of the box</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo" id="demo">
+  <div class="container">
+    <span class="section-eyebrow">See the difference</span>
+    <h2 class="section-title">The same lead. Two very different replies.</h2>
+    <p class="section-sub">Here's a real buyer inquiry every agent gets weekly — and what changes when you let PropMail draft the response.</p>
+
+    <div class="demo-compare">
+      <div class="demo-card bad">
+        <span class="demo-label">✗ Written manually at 9pm</span>
+        <div class="demo-time">Drafted in <strong>22 minutes</strong> after a long showing day</div>
+        <div class="demo-subject">Re: Inquiry about 42 Oak Street</div>
+        <div class="demo-body">Hi,
+
+Thanks for reaching out about the property. I am the listing agent. Let me know if you would like to schedule a showing or if you have any questions.
+
+Best regards,
+Marcus</div>
+      </div>
+
+      <div class="demo-arrow">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+
+      <div class="demo-card good">
+        <span class="demo-label">✓ Generated by PropMail AI</span>
+        <div class="demo-time">Drafted in <strong>28 seconds</strong> between back-to-back showings</div>
+        <div class="demo-subject">42 Oak Street — let's find a time this week</div>
+        <div class="demo-body">Hi Sarah,
+
+Thanks for reaching out about 42 Oak Street — it's a great pick. The kitchen renovation and the school district are what most buyers are loving about this one.
+
+A few quick questions so I can be most helpful:
+
+1. Are you already pre-approved, or would you like a lender intro?
+2. What's your ideal move-in timeline?
+3. Any must-haves I should keep an eye out for in case this one moves quickly?
+
+I have showing slots open Thursday afternoon and Saturday morning. Want me to hold one for you?
+
+Marcus Reid</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <span class="section-eyebrow">8 Email Types</span>
+    <h2 class="section-title">Every email a real estate agent actually sends.</h2>
+    <p class="section-sub">No generic "AI writes anything" gimmicks. Each template is tuned for the exact scenarios that fill your inbox.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏠</div>
+        <div class="feature-name">Buyer Lead Response</div>
+        <div class="feature-desc">Fast, warm replies to new buyer inquiries — with qualifying questions baked in.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚪</div>
+        <div class="feature-name">Post Open House</div>
+        <div class="feature-desc">Follow up with visitors while the property is still fresh in their minds.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <div class="feature-name">Seller Follow-Up</div>
+        <div class="feature-desc">Confident, no-pressure follow-ups after a listing presentation.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">❄️</div>
+        <div class="feature-name">Re-engage Cold Lead</div>
+        <div class="feature-desc">Bring quiet leads back to life with low-pressure check-ins that feel human.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <div class="feature-name">Offer Submission</div>
+        <div class="feature-desc">Professional offer emails to listing agents that highlight your buyer's strengths.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <div class="feature-name">Handle Objection</div>
+        <div class="feature-desc">Empathetic, data-backed replies to price concerns and market doubts.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-name">Market Update</div>
+        <div class="feature-desc">Monthly newsletter content that actually gets opened, not deleted.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-name">Referral Request</div>
+        <div class="feature-desc">Natural, non-awkward asks for referrals from past clients who love you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="container">
+    <span class="section-eyebrow">What agents are saying</span>
+    <h2 class="section-title">Made by an agent. Loved by hundreds.</h2>
+    <p class="section-sub">Real feedback from real estate professionals who got their evenings back.</p>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">"I was easily losing two hours every night catching up on follow-ups. Now I draft them between showings on my phone. My response time to new leads went from 'next day' to 'within the hour' — and I've closed three extra deals this quarter because of it."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JR</div>
+          <div>
+            <div class="testimonial-name">Jessica Romero</div>
+            <div class="testimonial-role">Realtor, Keller Williams · Austin, TX</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">"What sold me is that it doesn't sound like AI. The objection-handling email saved a deal that was on the verge of dying over a $15K price gap. The buyers came back to the table the same day."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MC</div>
+          <div>
+            <div class="testimonial-name">Marcus Chen</div>
+            <div class="testimonial-role">Broker Associate, Compass · San Diego, CA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">"I have ADHD and writing follow-up emails was where I was bleeding money — leads going cold because I'd start a reply and never finish it. PropMail removed that bottleneck completely. Best $29 I spend every month."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">DT</div>
+          <div>
+            <div class="testimonial-name">Danielle Thompson</div>
+            <div class="testimonial-role">Realtor, RE/MAX · Charlotte, NC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container pricing-inner">
+    <span class="section-eyebrow">Simple pricing</span>
+    <h2 class="section-title">One plan. Every feature. Cancel anytime.</h2>
+    <p class="section-sub">If PropMail saves you even one hour a week, it pays for itself ten times over.</p>
+
+    <div class="pricing-card">
+      <span class="pricing-tag">★ 7-Day Free Trial</span>
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">Everything you need to never write a follow-up from scratch again.</div>
+      <div class="plan-price">
+        <span class="plan-price-num">$29</span>
+        <span class="plan-price-period">/ month</span>
+      </div>
+      <div class="plan-trial">7 days free · then $29/mo · cancel anytime</div>
+      <ul class="plan-features">
+        <li>
+          <svg class="plan-check" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          Unlimited email generations
+        </li>
+        <li>
+          <svg class="plan-check" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          All 8 email types (buyer, seller, objection, more)
+        </li>
+        <li>
+          <svg class="plan-check" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          3 tone presets: professional, warm, urgent
+        </li>
+        <li>
+          <svg class="plan-check" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          Editable output + one-click copy
+        </li>
+        <li>
+          <svg class="plan-check" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          Works on mobile between showings
+        </li>
+        <li>
+          <svg class="plan-check" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          Email support from a real human
+        </li>
+      </ul>
+      <a href="https://buy.stripe.com/test_5kQ6oAe9O5OT6EBeYrfjG00" class="btn-primary">
+        Start Free Trial
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <p class="pricing-note">No credit card required to start your trial.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <span class="section-eyebrow">FAQ</span>
+    <h2 class="section-title">Questions agents always ask before signing up.</h2>
+    <p class="section-sub">Don't see yours? Email us at hello@propmail.ai and we'll get back same day.</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">
+          Will my emails sound like a robot wrote them?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          No — that's the whole point. Every template was designed with a real estate copywriter who's been an agent for 15 years. You'll find emails read like a human wrote them at their desk. You can also edit any output before sending, and the system learns your three preferred tones (professional, warm, urgent).
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Does it work with Gmail, Outlook, or my CRM?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          PropMail works in your browser. Generate the email, click "Copy email," then paste it into Gmail, Outlook, Follow Up Boss, kvCORE, Chime, or any other tool you already use. No installation or integration required. Direct CRM integrations are coming Q3.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Is my client data safe?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          Yes. We don't store the content of generated emails, and we never share or sell data. Your account is protected by Supabase authentication, and only you can see your generation history. We're also fully aligned with U.S. real estate data handling expectations.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          What if I cancel before the trial ends?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          You're not charged a cent. The 7-day trial is genuinely free — no credit card required to start. If PropMail doesn't save you real time in the first week, cancel from your dashboard with one click and you'll never hear from us again (other than a single "what could we have done better?" email).
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          I'm a brand-new agent. Will this still help me?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          Especially you. New agents often lose deals because they hesitate to send follow-ups — afraid of sounding pushy or unprofessional. PropMail removes that hesitation. You'll send faster, more polished emails than agents with 10 years on you, which is one of the fastest ways to build trust with first-time clients.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container final-cta-content">
+    <h2>Get your evenings back. Starting tonight.</h2>
+    <p>Join hundreds of agents already drafting client emails in seconds, not hours.</p>
+    <a href="https://buy.stripe.com/test_5kQ6oAe9O5OT6EBeYrfjG00" class="btn-primary">
+      Start Your 7-Day Free Trial
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-inner">
+    <div class="logo">
+      <span class="logo-name">PropMail AI</span>
+    </div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="mailto:hello@propmail.ai">Contact</a>
+    </div>
+    <div>© 2026 PropMail AI · Made for U.S. realtors</div>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Open first FAQ by default
+  document.querySelector('.faq-item')?.classList.add('open');
+</script>
+
+</body>
+</html>
