@@ -1339,6 +1339,8 @@ async function signInWithGoogle() {
   });
   if (error) showAuthError(error.message);
 }
+
+async function signIn() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   clearAuthMessages();
