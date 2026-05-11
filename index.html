@@ -808,10 +808,7 @@
   <aside class="panel-form mobile-active" id="panel-form">
     <p class="panel-title">Generate your email</p>
 
-    <div class="api-notice" style="background:var(--gold-light); border-color:var(--gold);">
-      <strong>✅ Powered by Claude AI</strong>
-      Generate professional real estate emails in seconds — no setup needed.
-    </div>
+
 
     <div class="section-label">Email type</div>
     <div class="email-types" id="email-types">
@@ -1287,6 +1284,11 @@ async function generateEmail() {
             const json = JSON.parse(data);
             if (json.type === 'content_block_delta' && json.delta?.text) {
               fullText += json.delta.text;
+            } else if (json.choices?.[0]?.delta?.content) {
+              fullText += json.choices[0].delta.content;
+            } else {
+              continue;
+            }
 
               // Hide skeleton, show output on first real content
               if (!streamStarted) {
