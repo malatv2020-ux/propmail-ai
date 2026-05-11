@@ -22,6 +22,21 @@
     --radius: 12px;
     --font-display: 'DM Serif Display', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  [data-theme="dark"] {
+    --ink: #f0ece4;
+    --paper: #18170f;
+    --cream: #201f14;
+    --gold: #d4a94e;
+    --gold-light: #2a2310;
+    --rust: #d4704a;
+    --sage: #6a9067;
+    --muted: #8a8478;
+    --border: #2e2c20;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3);
   }
 
   body {
@@ -30,6 +45,7 @@
     color: var(--ink);
     min-height: 100vh;
     line-height: 1.6;
+    transition: background var(--transition), color var(--transition);
   }
 
   /* --- HEADER --- */
@@ -37,12 +53,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 16px 40px;
     border-bottom: 1px solid var(--border);
     background: var(--paper);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: background var(--transition), border-color var(--transition);
   }
 
   .logo {
@@ -70,9 +87,42 @@
   }
 
   .header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     font-size: 13px;
     color: var(--muted);
   }
+
+  .header-tagline { display: none; }
+  @media (min-width: 600px) { .header-tagline { display: block; } }
+
+  /* Dark mode toggle */
+  .dark-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    background: var(--cream);
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .dark-toggle:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-light);
+  }
+
+  .dark-icon-sun { display: none; }
+  .dark-icon-moon { display: block; }
+  [data-theme="dark"] .dark-icon-sun { display: block; }
+  [data-theme="dark"] .dark-icon-moon { display: none; }
 
   /* --- LAYOUT --- */
   .app {
@@ -556,13 +606,173 @@
     margin-bottom: 4px;
   }
 
-  /* Responsive */
+  /* Mobile tab switcher */
+  .mobile-tabs {
+    display: none;
+    position: sticky;
+    top: 57px;
+    z-index: 90;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+  }
+
+  .mobile-tab-row {
+    display: flex;
+  }
+
+  .mobile-tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all var(--transition);
+    font-family: var(--font-body);
+  }
+
+  .mobile-tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* Skeleton loading */
+  @keyframes skeleton-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  .skeleton-wrap {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px 32px;
+  }
+
+  .skeleton-wrap.active {
+    display: flex;
+  }
+
+  .skeleton-line {
+    height: 14px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--cream) 25%, var(--border) 50%, var(--cream) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease infinite, skeleton-pulse 1.4s ease infinite;
+  }
+
+  @keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .skeleton-line.w-full { width: 100%; }
+  .skeleton-line.w-80 { width: 80%; }
+  .skeleton-line.w-60 { width: 60%; }
+  .skeleton-line.w-90 { width: 90%; }
+  .skeleton-line.w-70 { width: 70%; }
+
+  /* Loading bar improvement */
+  .loading-bar {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--rust), var(--gold));
+    background-size: 200% 100%;
+    animation: shimmer 1.2s ease infinite;
+    border-radius: 2px;
+    display: none;
+    transition: opacity 0.3s;
+  }
+
+  .loading-bar.active { display: block; }
+
+  /* Smooth transitions for panels */
+  .panel-form, .panel-output {
+    transition: background var(--transition), border-color var(--transition);
+  }
+
+  input, select, textarea {
+    transition: border-color 0.15s, background var(--transition), color var(--transition);
+  }
+
+  .type-btn, .tone-opt, .action-btn, .history-item, .api-notice, .error-msg, .email-meta, .email-body-wrap {
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+  }
+
+  [data-theme="dark"] .email-body {
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  [data-theme="dark"] .api-notice {
+    color: #d4a94e;
+  }
+
+  [data-theme="dark"] .api-notice a {
+    color: #d4a94e;
+  }
+
+  [data-theme="dark"] .generate-btn {
+    background: #d4a94e;
+    color: #18170f;
+  }
+
+  [data-theme="dark"] .generate-btn:hover:not(:disabled) {
+    background: #c49a3e;
+  }
   @media (max-width: 768px) {
-    .app { grid-template-columns: 1fr; }
-    .panel-form { border-right: none; border-bottom: 1px solid var(--border); }
-    header { padding: 16px 20px; }
-    .panel-form { padding: 24px 20px; }
-    .panel-output { padding: 24px 20px; }
+    header { padding: 12px 16px; }
+
+    .mobile-tabs { display: block; }
+
+    .app {
+      grid-template-columns: 1fr;
+      min-height: calc(100vh - 100px);
+    }
+
+    .panel-form {
+      border-right: none;
+      border-bottom: none;
+      padding: 20px 16px;
+      display: none;
+    }
+
+    .panel-form.mobile-active { display: block; }
+
+    .panel-output {
+      padding: 20px 16px;
+      display: none;
+    }
+
+    .panel-output.mobile-active { display: flex; }
+
+    .output-actions {
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .action-btn {
+      font-size: 11px;
+      padding: 7px 10px;
+    }
+
+    .email-types {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .email-body {
+      padding: 18px 16px;
+      font-size: 13px;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .panel-form { display: block !important; }
+    .panel-output { display: flex !important; }
   }
 </style>
 </head>
@@ -573,13 +783,29 @@
     <span class="logo-name">PropMail AI</span>
     <span class="logo-badge">Beta</span>
   </div>
-  <div class="header-right">AI Email Writer for Real Estate Agents</div>
+  <div class="header-right">
+    <span class="header-tagline">AI Email Writer for Real Estate Agents</span>
+    <button class="dark-toggle" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">
+      <!-- Moon icon -->
+      <svg class="dark-icon-moon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <!-- Sun icon -->
+      <svg class="dark-icon-sun" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
 </header>
+
+<!-- Mobile tabs -->
+<div class="mobile-tabs" id="mobile-tabs">
+  <div class="mobile-tab-row">
+    <button class="mobile-tab active" onclick="switchMobileTab('form', this)">✍️ Compose</button>
+    <button class="mobile-tab" onclick="switchMobileTab('output', this)">📧 Your Email</button>
+  </div>
+</div>
 
 <div class="app">
 
   <!-- LEFT: FORM -->
-  <aside class="panel-form">
+  <aside class="panel-form mobile-active" id="panel-form">
     <p class="panel-title">Generate your email</p>
 
     <div class="api-notice">
@@ -676,7 +902,7 @@
   </aside>
 
   <!-- RIGHT: OUTPUT -->
-  <main class="panel-output">
+  <main class="panel-output" id="panel-output">
     <div class="output-header">
       <p class="output-title">Your email</p>
       <div class="output-actions">
@@ -698,6 +924,20 @@
     <div class="loading-bar" id="loading-bar"></div>
 
     <div class="error-msg" id="error-msg"></div>
+
+    <!-- Skeleton loading state -->
+    <div class="skeleton-wrap" id="skeleton-wrap">
+      <div class="skeleton-line w-60"></div>
+      <div class="skeleton-line w-90" style="height:11px; margin-top:4px"></div>
+      <div style="height:16px"></div>
+      <div class="skeleton-line w-full"></div>
+      <div class="skeleton-line w-80" style="margin-top:10px"></div>
+      <div class="skeleton-line w-full" style="margin-top:10px"></div>
+      <div class="skeleton-line w-70" style="margin-top:10px"></div>
+      <div class="skeleton-line w-90" style="margin-top:10px"></div>
+      <div class="skeleton-line w-full" style="margin-top:10px"></div>
+      <div class="skeleton-line w-60" style="margin-top:10px"></div>
+    </div>
 
     <!-- Empty state -->
     <div class="empty-state" id="empty-state">
@@ -755,6 +995,52 @@ let selectedTone = 'professional';
 let history = [];
 let currentSubject = '';
 let isGenerating = false;
+
+// --- INIT ---
+(function init() {
+  // Dark mode
+  const savedTheme = localStorage.getItem('propmail-theme') || 'light';
+  if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+  // Saved API key
+  const savedKey = localStorage.getItem('propmail-apikey');
+  if (savedKey) document.getElementById('api-key-input').value = savedKey;
+
+  // Save API key on input
+  document.getElementById('api-key-input').addEventListener('input', function() {
+    localStorage.setItem('propmail-apikey', this.value.trim());
+  });
+
+  // Default mobile: show form
+  if (window.innerWidth <= 768) {
+    document.getElementById('panel-form').classList.add('mobile-active');
+  }
+})();
+
+// --- DARK MODE ---
+function toggleDark() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('propmail-theme', isDark ? 'light' : 'dark');
+}
+
+// --- MOBILE TABS ---
+function switchMobileTab(tab, el) {
+  document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  const form = document.getElementById('panel-form');
+  const output = document.getElementById('panel-output');
+
+  if (tab === 'form') {
+    form.classList.add('mobile-active');
+    output.classList.remove('mobile-active');
+  } else {
+    output.classList.add('mobile-active');
+    form.classList.remove('mobile-active');
+  }
+}
 
 const typeLabels = {
   'buyer-response': 'Buyer Lead Response',
@@ -954,15 +1240,22 @@ async function generateEmail() {
   const copySubjectBtn = document.getElementById('copy-subject-btn');
   const regenBtn = document.getElementById('regenerate-btn');
   const outputFooter = document.getElementById('output-footer');
+  const skeletonWrap = document.getElementById('skeleton-wrap');
 
   genBtn.disabled = true;
   genBtn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0"/></svg> Generating...`;
 
   loadingBar.classList.add('active');
   emptyState.style.display = 'none';
-  emailOutput.classList.add('visible');
-  emailBody.innerHTML = '<span class="streaming-cursor"></span>';
+  emailOutput.classList.remove('visible');
+  skeletonWrap.classList.add('active');
   outputFooter.style.display = 'none';
+
+  // Auto-switch ke tab output di mobile
+  if (window.innerWidth <= 768) {
+    const outputTab = document.querySelectorAll('.mobile-tab')[1];
+    switchMobileTab('output', outputTab);
+  }
 
   document.getElementById('out-to').textContent = document.getElementById('client-name').value || '—';
   document.getElementById('out-type').textContent = typeLabels[selectedType];
@@ -998,6 +1291,7 @@ async function generateEmail() {
     const decoder = new TextDecoder();
     let fullText = '';
     let subjectParsed = false;
+    let streamStarted = false;
 
     emailBody.innerHTML = '';
 
@@ -1016,6 +1310,13 @@ async function generateEmail() {
             const json = JSON.parse(data);
             if (json.type === 'content_block_delta' && json.delta?.text) {
               fullText += json.delta.text;
+
+              // Hide skeleton, show output on first real content
+              if (!streamStarted) {
+                streamStarted = true;
+                skeletonWrap.classList.remove('active');
+                emailOutput.classList.add('visible');
+              }
 
               if (!subjectParsed && fullText.includes('\n')) {
                 const lines2 = fullText.split('\n');
@@ -1070,12 +1371,14 @@ async function generateEmail() {
     addToHistory(typeLabels[selectedType], document.getElementById('client-name').value, currentSubject, fullText);
 
   } catch (err) {
+    skeletonWrap.classList.remove('active');
     showError('Error: ' + err.message + '. Check your API key and try again.');
     emptyState.style.display = 'flex';
     emailOutput.classList.remove('visible');
   } finally {
     isGenerating = false;
     loadingBar.classList.remove('active');
+    skeletonWrap.classList.remove('active');
     genBtn.disabled = false;
     genBtn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Generate Email`;
   }
