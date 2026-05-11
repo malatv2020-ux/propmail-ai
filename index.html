@@ -6,7 +6,7 @@
 <title>PropMail AI — Email Writer for Real Estate Agents</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1305,11 +1305,11 @@
 // --- SUPABASE INIT ---
 const SUPABASE_URL = 'https://zsdszdfdfedzthsycnms.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzZHN6ZGZkZmVkenRoc3ljbm1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NjkwNjQsImV4cCI6MjA5NDA0NTA2NH0.yTHyekIcWGWO_uEQMKSxlLMg88t7rTsGn1y-DGe9sQI';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- AUTH FUNCTIONS ---
 async function checkAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await _supabase.auth.getSession();
   if (session) {
     onLoggedIn(session.user);
   }
@@ -1331,7 +1331,7 @@ function onLoggedOut() {
 }
 
 async function signInWithGoogle() {
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { error } = await _supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: 'https://propmail-ai.vercel.app'
@@ -1352,7 +1352,7 @@ async function signInWithGoogle() {
   btn.disabled = true;
   btn.textContent = 'Signing in...';
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
 
   btn.disabled = false;
   btn.textContent = 'Sign In →';
@@ -1383,7 +1383,7 @@ async function signUp() {
   btn.disabled = true;
   btn.textContent = 'Creating account...';
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await _supabase.auth.signUp({ email, password });
 
   btn.disabled = false;
   btn.textContent = 'Create Account →';
@@ -1397,7 +1397,7 @@ async function signUp() {
 }
 
 async function signOut() {
-  await supabase.auth.signOut();
+  await _supabase.auth.signOut();
   onLoggedOut();
 }
 
@@ -1427,7 +1427,7 @@ function clearAuthMessages() {
 }
 
 // Listen auth state changes
-supabase.auth.onAuthStateChange((event, session) => {
+_supabase.auth.onAuthStateChange((event, session) => {
   if (session) {
     onLoggedIn(session.user);
   } else {
