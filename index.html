@@ -1282,40 +1282,40 @@ async function generateEmail() {
           if (data === '[DONE]') continue;
           try {
             const json = JSON.parse(data);
-            if (json.type === 'content_block_delta' && json.delta?.text) {
-              fullText += json.delta.text;
-            } else if (json.choices?.[0]?.delta?.content) {
-              fullText += json.choices[0].delta.content;
-            } else {
-              continue;
+            let newText = '';
+            if (json.choices?.[0]?.delta?.content) {
+              newText = json.choices[0].delta.content;
+            } else if (json.type === 'content_block_delta' && json.delta?.text) {
+              newText = json.delta.text;
+            }
+            if (!newText) continue;
+            fullText += newText;
+
+            // Hide skeleton, show output on first real content
+            if (!streamStarted) {
+              streamStarted = true;
+              skeletonWrap.classList.remove('active');
+              emailOutput.classList.add('visible');
             }
 
-              // Hide skeleton, show output on first real content
-              if (!streamStarted) {
-                streamStarted = true;
-                skeletonWrap.classList.remove('active');
-                emailOutput.classList.add('visible');
-              }
-
-              if (!subjectParsed && fullText.includes('\n')) {
-                const lines2 = fullText.split('\n');
-                const subjectLine = lines2[0];
-                if (subjectLine.toLowerCase().startsWith('subject:')) {
-                  currentSubject = subjectLine.replace(/^subject:\s*/i, '').trim();
-                  document.getElementById('out-subject').textContent = currentSubject;
-                  subjectParsed = true;
-                  const bodyText = lines2.slice(2).join('\n');
-                  emailBody.innerHTML = escapeHtml(bodyText) + '<span class="streaming-cursor"></span>';
-                } else {
-                  emailBody.innerHTML = escapeHtml(fullText) + '<span class="streaming-cursor"></span>';
-                }
-              } else if (subjectParsed) {
-                const lines2 = fullText.split('\n');
+            if (!subjectParsed && fullText.includes('\n')) {
+              const lines2 = fullText.split('\n');
+              const subjectLine = lines2[0];
+              if (subjectLine.toLowerCase().startsWith('subject:')) {
+                currentSubject = subjectLine.replace(/^subject:\s*/i, '').trim();
+                document.getElementById('out-subject').textContent = currentSubject;
+                subjectParsed = true;
                 const bodyText = lines2.slice(2).join('\n');
                 emailBody.innerHTML = escapeHtml(bodyText) + '<span class="streaming-cursor"></span>';
               } else {
                 emailBody.innerHTML = escapeHtml(fullText) + '<span class="streaming-cursor"></span>';
               }
+            } else if (subjectParsed) {
+              const lines2 = fullText.split('\n');
+              const bodyText = lines2.slice(2).join('\n');
+              emailBody.innerHTML = escapeHtml(bodyText) + '<span class="streaming-cursor"></span>';
+            } else {
+              emailBody.innerHTML = escapeHtml(fullText) + '<span class="streaming-cursor"></span>';
             }
           } catch (e) {}
         }
