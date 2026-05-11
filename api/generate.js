@@ -3,7 +3,6 @@ export const config = {
 };
 
 export default async function handler(req) {
-  // Only allow POST
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
@@ -11,8 +10,7 @@ export default async function handler(req) {
     });
   }
 
-  // Get API key from environment variable (set di Vercel dashboard)
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return new Response(JSON.stringify({ error: 'API key not configured on server.' }), {
       status: 500,
@@ -38,33 +36,36 @@ export default async function handler(req) {
     });
   }
 
-  // Forward request to Anthropic with streaming
-  const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
+  // Format messages untuk OpenAI (tambah system message di depan)
+  const openaiMessages = [
+    { role: 'system', content: system || '' },
+    ...messages
+  ];
+
+  const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
+      'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
+      model: 'gpt-4o-mini',
       max_tokens: 1024,
       stream: true,
-      system: system || '',
-      messages,
+      messages: openaiMessages,
     }),
   });
 
-  if (!anthropicRes.ok) {
-    const err = await anthropicRes.json();
-    return new Response(JSON.stringify({ error: err.error?.message || 'Anthropic API error' }), {
-      status: anthropicRes.status,
+  if (!openaiRes.ok) {
+    const err = await openaiRes.json();
+    return new Response(JSON.stringify({ error: err.error?.message || 'OpenAI API error' }), {
+      status: openaiRes.status,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
   // Stream response langsung ke client
-  return new Response(anthropicRes.body, {
+  return new Response(openaiRes.body, {
     status: 200,
     headers: {
       'Content-Type': 'text/event-stream',
